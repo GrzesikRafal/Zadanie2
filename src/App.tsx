@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
+
 import './App.css';
+import PaginatedTable from './components/PaginatedTable/PaginatedTable';
+import Pagination from './components/Pagination/Pagination';
+import { tableData as dataEntries } from './TableData/TableData'
+import { usePagination } from './Hooks/usePagination'
+
+
 
 function App() {
+  const [
+    { actualPageIdx, lastPageIdx, entriesOnSelectedPage, isBusy,
+      goToFirstPage, goToPrevPage, goToPage, goToNextPage, goToLastPage, amountOfPages }
+  ] = usePagination(dataEntries)
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <PaginatedTable dataEntries={entriesOnSelectedPage} />
+      <Pagination
+        paginationActions={{ goToFirstPage, goToPrevPage, goToPage, goToNextPage, goToLastPage }}
+        paginationState={actualPageIdx}
+        amountOfPages={amountOfPages}
+      />
     </div>
   );
 }
